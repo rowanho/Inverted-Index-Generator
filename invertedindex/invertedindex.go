@@ -65,29 +65,15 @@ func CreateInvertedIndex() *InvertedIndex {
 	return invertedIndex
 }
 
-
-func GenerateFpMap(fps []uint64) map[uint64]bool {
-	fpMap := make(map[uint64]bool)
-
-	for _, fp := range fps {
-		if _, value := fpMap[fp]; !value {
-			fpMap[fp] = true
-		}
-	}
-
-	return fpMap
-}
-
 // GenerateInvertedIndex for each document list
 // gets each word as a token, processes it and
 // generates a hash map for each document
 // using them it then generates the
 // inverted index of all words
-func GenerateInvertedIndex(fpList [][]uint64) InvertedIndex {
+func GenerateInvertedIndex(fpList []map[uint64]bool) InvertedIndex {
 	fpMaps := make([]map[uint64]bool, len(fpList))
 
-	for _, fps := range fpList {
-		fpMap := GenerateFpMap(fps)
+	for _, fpMap:= range fpList {
 		fpMaps = append(fpMaps, fpMap)
 	}
 
