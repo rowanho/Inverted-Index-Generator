@@ -70,12 +70,7 @@ func CreateInvertedIndex() *InvertedIndex {
 // generates a hash map for each document
 // using them it then generates the
 // inverted index of all words
-func GenerateInvertedIndex(fpList []map[uint64]bool) InvertedIndex {
-	fpMaps := make([]map[uint64]bool, len(fpList))
-
-	for _, fpMap:= range fpList {
-		fpMaps = append(fpMaps, fpMap)
-	}
+func GenerateInvertedIndex(fpMaps []map[uint64]bool) InvertedIndex {
 
 	// Create an empty inverted index
 	invertedIndex := CreateInvertedIndex()
