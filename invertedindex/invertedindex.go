@@ -18,14 +18,14 @@ type InvertedIndex struct {
 
 // FindItem returns the position of a given
 // Item in an Inverted Index
-func (invertedIndex *InvertedIndex) FindItem(Term uint64) []int {
-	indexes := make([]int, 0)
+func (invertedIndex *InvertedIndex) FindItem(Term uint64) int {
 	for index, item := range invertedIndex.Items {
 		if item.Term == Term {
-			indexes = append(indexes, index)
+			return index
 		}
 	}
-	return indexes
+	
+	panic("Not Found")
 }
 
 // AddItem works by first checking if a given term is already present
@@ -88,4 +88,15 @@ func GenerateInvertedIndex(fpList []map[uint64]bool) InvertedIndex {
 		}
 	}
 	return *invertedIndex
+}
+
+func Find(index InvertedIndex, Term uint64) []int {
+	if index.HashMap[Term] != nil {
+		itemPosition := index.FindItem(Term)
+		item := index.Items[itemPosition]
+
+		return item.DocumentListing
+	} else {
+		return []int{}
+	}
 }
