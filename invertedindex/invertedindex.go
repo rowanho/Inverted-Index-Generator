@@ -5,7 +5,7 @@ package invertedindex
 // and an array of documents it is persent in
 type InvertedIndexEntry struct {
 	Term            uint64
-	Frequencies       map[int]int
+	Frequency       int
 	DocumentListing []int
 }
 
@@ -39,15 +39,14 @@ func (invertedIndex *InvertedIndex) AddItem(Term uint64, Document int) {
 
 		FoundItemPosition := invertedIndex.FindItem(Term)
 
-		invertedIndex.Items[FoundItemPosition].Frequencies[Document]++
+		invertedIndex.Items[FoundItemPosition].Frequency++
 		invertedIndex.Items[FoundItemPosition].DocumentListing = append(invertedIndex.Items[FoundItemPosition].DocumentListing, Document)
 	} else {
 		// log.Println("Index item", Term, " does not exist :: creating new item")
-		m := make(map[int]int, 0)
-		m[Document] = 1
+
 		InvertedIndexEntry := &InvertedIndexEntry{
 			Term:            Term,
-			Frequencies:       m,
+			Frequency:       1,
 			DocumentListing: []int{Document},
 		}
 
@@ -86,16 +85,13 @@ func GenerateInvertedIndex(fpMaps []map[uint64]bool) InvertedIndex {
 	return *invertedIndex
 }
 
-func Find(index InvertedIndex, Term uint64) ([]int, []int) {
+func Find(index InvertedIndex, Term uint64) []int {
 	if index.HashMap[Term] != nil {
 		itemPosition := index.FindItem(Term)
 		item := index.Items[itemPosition]
-		freqs := make([]int, len(item.DocumentListing))
-		for i, d := range(item.DocumentListing) {
-			freqs[i] = item.Frequencies[d]
-		}
-		return item.DocumentListing, freqs
+
+		return item.DocumentListing
 	} else {
-		return []int{}, []int{}
+		return []int{}
 	}
 }
